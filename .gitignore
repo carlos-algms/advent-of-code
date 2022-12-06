@@ -24,3 +24,8 @@ node_modules/
 
 junit.xml
 tsconfig.tsbuildinfo
+
+
+# Added by cargo
+
+/target
