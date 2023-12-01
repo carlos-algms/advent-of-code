@@ -14,32 +14,29 @@ async function part2TestInput() {
 }
 
 async function part2ManualTest() {
-  const input = ['fivezg8mjf6hrxnhgxxttwoneg', 'slhdsxngfxszspppxxfftmxlptzhtwovp1'];
+  const input = ['fivezg8mjf6hrxnhgxxttwoneg', 'slhdsxngfxszspppxxfftmxlptzhtwovp1', 'fone2two'];
   // const expectedSum = 51;
   const { calibrationNumbers, sum } = day01Part2(input);
-  assert.deepEqual(calibrationNumbers, [51, 21]);
+  assert.deepEqual(calibrationNumbers, [51, 21, 12]);
   // assert.equal(sum, expectedSum);
   console.log('✅ Test manual input passed!');
 }
 
 async function part2Input() {
   const input = await fileReader(__dirname + '/day_01_input.txt');
-  const expectedSum = 0;
+  const expectedSum = 54277;
 
   const { sum, calibrationNumbers } = day01Part2(input);
   console.log(`ℹ️ Part 2 answer: ${sum}`);
 
   assert.equal(calibrationNumbers.length, 1000);
-  assert(sum < 54425); // first submit
-  assert(sum > 40000); // blind test
-  assert.notEqual(sum, 54390);
 
   assert.equal(sum, expectedSum);
   console.log('✅ Part 2 input passed!');
 }
 
 (async () => {
-  // await part2TestInput();
-  // await part2ManualTest();
+  await part2TestInput();
+  await part2ManualTest();
   await part2Input();
 })();
