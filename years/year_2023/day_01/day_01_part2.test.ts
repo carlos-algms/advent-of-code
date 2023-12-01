@@ -8,17 +8,33 @@ async function part2TestInput() {
   const testExpectedSum = 281;
 
   const { calibrationNumbers, sum } = day01Part2(testInput);
-  assert.deepEqual(calibrationNumbers, [29, 83, 13, 24, 42, 14, 76]);
+  assert.deepEqual(calibrationNumbers, [
+    29, //
+    83,
+    13,
+    24,
+    42,
+    14,
+    76,
+  ]);
   assert.equal(sum, testExpectedSum);
   console.log('✅ Test 2 input passed!');
 }
 
 async function part2ManualTest() {
-  const input = ['fivezg8mjf6hrxnhgxxttwoneg', 'slhdsxngfxszspppxxfftmxlptzhtwovp1', 'fone2two'];
-  // const expectedSum = 51;
-  const { calibrationNumbers, sum } = day01Part2(input);
-  assert.deepEqual(calibrationNumbers, [51, 21, 12]);
-  // assert.equal(sum, expectedSum);
+  const input = [
+    'fivezg8mjf6hrxnhgxxttwoneg', //
+    'slhdsxngfxszspppxxfftmxlptzhtwovp1',
+    'fone2two',
+  ];
+
+  const { calibrationNumbers } = day01Part2(input);
+  assert.deepEqual(calibrationNumbers, [
+    51, //
+    21,
+    12,
+  ]);
+
   console.log('✅ Test manual input passed!');
 }
 
