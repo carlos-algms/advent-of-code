@@ -1,4 +1,4 @@
 {
   "editor.formatOnSave": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "years/year_2023/node_modules/typescript/lib"
 }
