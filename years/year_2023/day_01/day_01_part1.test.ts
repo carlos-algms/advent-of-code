@@ -5,7 +5,7 @@ import { fileReader } from '../shared/fileReader';
 import { day01Part1 } from './day_01_part1';
 
 async function part1TestInput() {
-  const testInput = await fileReader(__dirname + '/day_01_input_test.txt');
+  const testInput = await fileReader(__dirname + '/day_01_input_1_test.txt');
   const testExpectedSum = 142;
 
   const { calibrationNumbers, sum } = day01Part1(testInput);
