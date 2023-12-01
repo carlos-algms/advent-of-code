@@ -7,9 +7,5 @@
   "license": "ISC",
   "private": true,
   "dependencies": {},
-  "devDependencies": {
-    "@types/node": "^18",
-    "typescript": "^4.9.3",
-    "ts-node": "^10.9.1"
-  }
+  "devDependencies": {}
 }

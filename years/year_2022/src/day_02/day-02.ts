@@ -1,4 +1,4 @@
-import { fileReader } from '../../shared/fileReader';
+import { fileReader } from '../shared/fileReader';
 
 enum Players {
   Opponent = 0,

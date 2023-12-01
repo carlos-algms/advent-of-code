@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { fileReader } from '../../shared/fileReader';
+import { fileReader } from '../shared/fileReader';
 
 async function app() {
   // const input = [
