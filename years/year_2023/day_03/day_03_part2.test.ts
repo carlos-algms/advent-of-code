@@ -2,12 +2,12 @@ import assert from 'assert';
 
 import { fileReader } from '../shared/fileReader';
 
-import { day03Part1 } from './day_03_part1';
+import { day03Part2 } from './day_03_part2';
 
 async function part1TestInput() {
   const input = await fileReader(__dirname + '/day_03_input_1_test.txt');
 
-  const { sum, numbers } = day03Part1(input);
+  const { sum, numbers } = day03Part2(input);
 
   const expectedSum = 467835;
   const expectedNumbers = [467, 35, 755, 598];
@@ -21,7 +21,7 @@ async function part1TestInput() {
 async function part1Input() {
   const input = await fileReader(__dirname + '/day_03_input.txt');
 
-  const { sum } = day03Part1(input);
+  const { sum } = day03Part2(input);
 
   const expectedSum = 532428;
 

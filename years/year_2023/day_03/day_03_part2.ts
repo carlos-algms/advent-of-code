@@ -1,4 +1,4 @@
-export function day03Part1(lines: string[]) {
+export function day03Part2(lines: string[]) {
   const capturedCoords: Record<number, number[]> = {};
 
   function wasCaptured(l: number, c: number) {
@@ -105,14 +105,14 @@ export function day03Part1(lines: string[]) {
 
       if (isSymbol(char)) {
         const numbers = getAdjacentNumbers(l, c);
-        if (numbers.length) {
+        // the rule for the part 2 is that a gear is only attached to 2 numbers
+        if (numbers.length === 2) {
           response.numbers.push(...numbers);
+          response.sum += numbers[0] * numbers[1];
         }
       }
     }
   }
-
-  response.sum = response.numbers.reduce((acc, n) => acc + n, 0);
 
   return response;
 }
