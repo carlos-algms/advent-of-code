@@ -1,5 +1,3 @@
-import assert from 'assert';
-
 import { fileReader } from '../shared/fileReader';
 
 import { BagContent, day02Part1 } from './day_02_part1';
@@ -10,33 +8,26 @@ const load: BagContent = {
   blue: 14,
 };
 
-async function part1TestInput() {
-  const input = await fileReader(__dirname + '/day_02_input_1_test.txt');
+describe('Day 2 - Part 1', () => {
+  it('Test input', async () => {
+    const input = await fileReader(__dirname + '/day_02_input_1_test.txt');
 
-  const { sum, ids } = day02Part1(input, load);
+    const { sum, ids } = day02Part1(input, load);
 
-  const expectedSum = 8;
-  const expectedIds = ['1', '2', '5'];
+    const expectedSum = 8;
+    const expectedIds = ['1', '2', '5'];
 
-  assert.strictEqual(sum, expectedSum);
-  assert.deepStrictEqual(ids, expectedIds);
+    expect(sum).toEqual(expectedSum);
+    expect(ids).toEqual(expectedIds);
+  });
 
-  console.log('✅ Test input passed!');
-}
+  it('Input', async () => {
+    const input = await fileReader(__dirname + '/day_02_input.txt');
 
-async function part1Input() {
-  const input = await fileReader(__dirname + '/day_02_input.txt');
+    const { sum } = day02Part1(input, load);
 
-  const { sum } = day02Part1(input, load);
+    const expectedSum = 1734;
 
-  const expectedSum = 8;
-
-  assert.equal(sum, expectedSum);
-
-  console.log('✅ Part 1 input passed!');
-}
-
-(async () => {
-  await part1TestInput();
-  await part1Input();
-})();
+    expect(sum).toEqual(expectedSum);
+  });
+});

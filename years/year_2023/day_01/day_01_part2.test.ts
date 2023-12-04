@@ -1,58 +1,48 @@
-import assert from 'assert';
-
 import { fileReader } from '../shared/fileReader';
 import { day01Part2 } from './day_01_part2';
 
-async function part2TestInput() {
-  const testInput = await fileReader(__dirname + '/day_01_input_2_test.txt');
-  const testExpectedSum = 281;
+describe('Day 1 - Part 2', () => {
+  it('test input', async () => {
+    const testInput = await fileReader(__dirname + '/day_01_input_2_test.txt');
+    const expectedSum = 281;
 
-  const { calibrationNumbers, sum } = day01Part2(testInput);
-  assert.deepEqual(calibrationNumbers, [
-    29, //
-    83,
-    13,
-    24,
-    42,
-    14,
-    76,
-  ]);
-  assert.equal(sum, testExpectedSum);
-  console.log('✅ Test 2 input passed!');
-}
+    const { calibrationNumbers, sum } = day01Part2(testInput);
 
-async function part2ManualTest() {
-  const input = [
-    'fivezg8mjf6hrxnhgxxttwoneg', //
-    'slhdsxngfxszspppxxfftmxlptzhtwovp1',
-    'fone2two',
-  ];
+    expect(calibrationNumbers).toEqual([
+      29, //
+      83,
+      13,
+      24,
+      42,
+      14,
+      76,
+    ]);
 
-  const { calibrationNumbers } = day01Part2(input);
-  assert.deepEqual(calibrationNumbers, [
-    51, //
-    21,
-    12,
-  ]);
+    expect(sum).toEqual(expectedSum);
+  });
 
-  console.log('✅ Test manual input passed!');
-}
+  it('manual input', async () => {
+    const input = [
+      'fivezg8mjf6hrxnhgxxttwoneg', //
+      'slhdsxngfxszspppxxfftmxlptzhtwovp1',
+      'fone2two',
+    ];
 
-async function part2Input() {
-  const input = await fileReader(__dirname + '/day_01_input.txt');
-  const expectedSum = 54277;
+    const { calibrationNumbers } = day01Part2(input);
+    expect(calibrationNumbers).toEqual([
+      51, //
+      21,
+      12,
+    ]);
+  });
 
-  const { sum, calibrationNumbers } = day01Part2(input);
-  console.log(`ℹ️ Part 2 answer: ${sum}`);
+  it('Real Input', async () => {
+    const input = await fileReader(__dirname + '/day_01_input.txt');
+    const expectedSum = 54277;
 
-  assert.equal(calibrationNumbers.length, 1000);
+    const { sum, calibrationNumbers } = day01Part2(input);
 
-  assert.equal(sum, expectedSum);
-  console.log('✅ Part 2 input passed!');
-}
-
-(async () => {
-  await part2TestInput();
-  await part2ManualTest();
-  await part2Input();
-})();
+    expect(calibrationNumbers).toHaveLength(1000);
+    expect(sum).toEqual(expectedSum);
+  });
+});
