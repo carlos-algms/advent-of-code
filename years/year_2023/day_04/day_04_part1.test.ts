@@ -9,7 +9,16 @@ async function part1TestInput() {
 
   const response = day04Part1(input);
 
-  assert.strictEqual(response, null);
+  const expectedSum = 13;
+  const expectedMatches = [
+    ['83', '86', '17', '48'], //
+    ['61', '32'],
+    ['21', '1'],
+    ['84'],
+  ];
+
+  assert.strictEqual(response.sum, expectedSum);
+  assert.deepEqual(response.matches, expectedMatches);
 
   console.log('✅ Day 04 Test input passed!');
 }
@@ -18,8 +27,13 @@ async function part1Input() {
   const input = await fileReader(__dirname + '/day_04_input.txt');
 
   const response = day04Part1(input);
+  const expectedSum = 25571;
 
-  assert.equal(response, null);
+  // pass1 was too hig
+  const pass1 = 25708;
+  assert(response.sum < pass1, `Expected ${response.sum} to be less than ${pass1}`);
+
+  assert.equal(response.sum, expectedSum);
 
   console.log('✅ Day 04 Part 1 input passed!');
 }
