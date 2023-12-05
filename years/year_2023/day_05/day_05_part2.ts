@@ -30,7 +30,6 @@ type Entry = {
 
 type ReturnValue = {
   seeds: [seedStart: number, seedEnd: number][];
-  entries: Entry[];
   lowestLocation: number | null;
 };
 
@@ -42,8 +41,8 @@ type ReturnValue = {
  * seed-to-soil map:
  * 50 98 2
  * ^  ^  ^ ---- Range length
- * |  | ------- Source range start
- * | ---------- Destination range start
+ * |  | ------- Source range start (seed)
+ * | ---------- Destination range start (soil)
  */
 export function day05Part2(lines: string[]): ReturnValue {
   const [seedsLine, ...mapLines] = lines;
@@ -52,52 +51,57 @@ export function day05Part2(lines: string[]): ReturnValue {
 
   const result: ReturnValue = {
     seeds,
-    entries: [],
     lowestLocation: null,
   };
 
-  const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
-  const total = seeds.reduce((acc, seedRange) => acc + seedRange[1] + seedRange[0], 0);
+  const total = map['humidity-to-location'].reduce((acc, [s, e]) => acc + (e - s), 0);
+  const bar = new cliProgress.SingleBar(
+    {
+      format: '{bar} {percentage}% | {duration_formatted} | ETA: {eta}s | {value}/{total}',
+    },
+    cliProgress.Presets.shades_classic,
+  );
   bar.start(total, 0);
 
-  for (const seedRange of seeds) {
-    for (let i = seedRange[0]; i <= seedRange[1]; i++) {
-      bar.increment();
-      const seed = i;
-      const soil = findPosition(seed, map['seed-to-soil']);
-      const fertilizer = findPosition(soil, map['soil-to-fertilizer']);
-      const water = findPosition(fertilizer, map['fertilizer-to-water']);
-      const light = findPosition(water, map['water-to-light']);
-      const temperature = findPosition(light, map['light-to-temperature']);
-      const humidity = findPosition(temperature, map['temperature-to-humidity']);
-      const location = findPosition(humidity, map['humidity-to-location']);
+  for (let i = 0; i <= total; i++) {
+    bar.increment();
+    const location = i;
+    const humidity = findPositionReverse(location, map['humidity-to-location']);
+    const temperature = findPositionReverse(humidity, map['temperature-to-humidity']);
+    const light = findPositionReverse(temperature, map['light-to-temperature']);
+    const water = findPositionReverse(light, map['water-to-light']);
+    const fertilizer = findPositionReverse(water, map['fertilizer-to-water']);
+    const soil = findPositionReverse(fertilizer, map['soil-to-fertilizer']);
+    const seed = findPositionReverse(soil, map['seed-to-soil']);
 
-      if (result.lowestLocation === null || location < result.lowestLocation) {
+    for (const seedRange of seeds) {
+      if (seedRange[0] <= seed && seed <= seedRange[1]) {
         result.lowestLocation = location;
+        bar.stop();
+        return result;
       }
     }
   }
 
   bar.stop();
-
   return result;
 }
 
-function findPosition(source: number, tuples: Tuple[]): number {
+function findPositionReverse(destination: number, tuples: Tuple[]) {
   for (const tuple of tuples) {
     const [destinationStart, destinationEnd, sourceStart, sourceEnd] = tuple;
 
-    if (sourceStart <= source && source <= sourceEnd) {
-      const offset = source - sourceStart;
-      const target = destinationStart + offset;
+    if (destinationStart <= destination && destination <= destinationEnd) {
+      const offset = destination - destinationStart;
+      const target = sourceStart + offset;
 
-      if (target <= destinationEnd) {
+      if (target <= sourceEnd) {
         return target;
       }
     }
   }
 
-  return source;
+  return destination;
 }
 
 function getSeeds(line: string): ReturnValue['seeds'] {
@@ -139,9 +143,9 @@ function buildMapper(lines: string[]): Mapper {
       continue;
     }
 
-    const [source, destination, rangeLength] = line.split(' ').map(Number);
+    const [destination, source, rangeLength] = line.split(' ').map(Number);
     const length = rangeLength - 1; // it is inclusive
-    const tuple: Tuple = [source, source + length, destination, destination + length];
+    const tuple: Tuple = [destination, destination + length, source, source + length];
     map[key].push(tuple);
   }
 

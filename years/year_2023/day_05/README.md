@@ -180,4 +180,4 @@ Consider all of the initial seed numbers listed in the ranges on the first line 
 
 **What is the lowest location number that corresponds to any of the initial seed numbers?**
 
-A: ``
+A: `27992443`
