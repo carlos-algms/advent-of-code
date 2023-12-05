@@ -7,11 +7,14 @@ describe('Day 5 - Part 2', () => {
     const input = await fileReader(__dirname + '/day_05_input_1_test.txt');
 
     const response = day05Part2(input);
+    expect(response.lowestLocation).toEqual(46);
   });
 
   it('Input', async () => {
     const input = await fileReader(__dirname + '/day_05_input.txt');
 
     const response = day05Part2(input);
+
+    expect(response.lowestLocation).toEqual(0);
   });
 });
