@@ -87,4 +87,4 @@ Determine the number of ways you could beat the record in each race.
 
 **What do you get if you multiply these numbers together?**
 
-A: ``
+A: `140220`
