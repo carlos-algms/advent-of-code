@@ -17,6 +17,6 @@ describe('Day 6 - Part 1', () => {
     const input = await fileReader(__dirname + '/day_06_input.txt');
 
     const response = day06Part2(input);
-    expect(response.possibilityOfWining).toEqual(0);
+    expect(response.possibilityOfWining).toEqual(39570185);
   });
 });
