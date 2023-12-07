@@ -9,11 +9,16 @@ describe(`Day ${day} - Part 1`, () => {
     const input = await fileReader(__dirname + `/day_${day}_input_1_test.txt`);
 
     const response = day07Part1(input);
+
+    expect(response).toBe(6440);
   });
 
   it('Real input', async () => {
     const input = await fileReader(__dirname + `/day_${day}_input.txt`);
 
     const response = day07Part1(input);
+    // first pass was too high
+    expect(response).toBeLessThan(241532394);
+    expect(response).toBe(241344943);
   });
 });

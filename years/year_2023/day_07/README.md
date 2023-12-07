@@ -100,4 +100,4 @@ Find the rank of every hand in your set.
 
 **What are the total winnings?**
 
-A: ``
+A: `241344943`
