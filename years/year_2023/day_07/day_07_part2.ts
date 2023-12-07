@@ -79,6 +79,7 @@ function getPoints(cards: string): Match {
 
   for (let c = 0; c < cards.length; c++) {
     const card = cards[c];
+
     if (card === 'J') {
       jokers++;
       continue;
@@ -98,40 +99,22 @@ function getPoints(cards: string): Match {
   let points = Match.HighCard;
 
   Object.values(matches).some((v) => {
-    cards;
     if (v === 5) {
       points = Match.FiveOfAKind;
       return true;
     }
-
     if (v === 4) {
-      if (jokers) {
-        points = Match.FiveOfAKind;
-        return true;
-      }
-
       points = Match.FourOfAKind;
       return true;
     }
-
     if (v === 3) {
-      if (points) {
-        points = Match.FullHouse;
-        return true;
+      if (!points) {
+        points = Match.ThreeOfAKind;
+        return false;
       }
 
-      if (jokers === 1) {
-        points = Match.FourOfAKind;
-        return true;
-      }
-
-      if (jokers === 2) {
-        points = Match.FiveOfAKind;
-        return true;
-      }
-
-      points = Match.ThreeOfAKind;
-      return false;
+      points = Match.FullHouse;
+      return true;
     }
 
     if (v === 2) {
@@ -141,23 +124,7 @@ function getPoints(cards: string): Match {
       }
 
       if (points === Match.OnePair) {
-        if (jokers === 1) {
-          // 1 pair + (1 pair + joker)
-          points = Match.FullHouse;
-          return true;
-        }
-
         points = Match.TwoPairs;
-        return true;
-      }
-
-      if (jokers === 3) {
-        points = Match.FiveOfAKind;
-        return true;
-      }
-
-      if (jokers === 2) {
-        points = Match.FourOfAKind;
         return true;
       }
 
@@ -166,28 +133,28 @@ function getPoints(cards: string): Match {
     }
   });
 
-  if (points === Match.HighCard) {
-    if (jokers === 1) {
-      return Match.OnePair;
+  if (jokers) {
+    if (points === Match.HighCard) {
+      if (jokers === 1) {
+        return Match.OnePair;
+      }
+
+      return 1 + jokers;
     }
 
-    if (jokers === 2) {
-      return Match.ThreeOfAKind;
+    if (points === Match.OnePair) {
+      return Math.ceil(points + jokers);
     }
 
-    if (jokers === 3) {
-      return Match.FourOfAKind;
-    }
-  } else if (points === Match.OnePair) {
-    if (jokers === 1) {
-      return Match.ThreeOfAKind;
+    if (points === Match.TwoPairs) {
+      return Match.FullHouse;
     }
 
-    if (jokers === 2) {
-      return Match.FourOfAKind;
+    if (points === Match.ThreeOfAKind) {
+      return Match.ThreeOfAKind + jokers;
     }
 
-    if (jokers === 3) {
+    if (points === Match.FourOfAKind) {
       return Match.FiveOfAKind;
     }
   }
