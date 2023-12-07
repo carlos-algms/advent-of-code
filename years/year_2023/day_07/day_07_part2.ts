@@ -2,7 +2,6 @@ const CardValue = {
   A: 14,
   K: 13,
   Q: 12,
-  J: 11,
   T: 10,
   '9': 9,
   '8': 8,
@@ -12,18 +11,19 @@ const CardValue = {
   '4': 4,
   '3': 3,
   '2': 2,
+  J: 1,
 };
 
 type CardValueKey = keyof typeof CardValue;
 
 enum Match {
-  HighCard,
-  OnePair,
-  TwoPairs,
-  ThreeOfAKind,
-  FullHouse,
-  FourOfAKind,
-  FiveOfAKind,
+  HighCard = 0,
+  OnePair = 1.2,
+  TwoPairs = 2.2,
+  ThreeOfAKind = 3,
+  FullHouse = 3.2,
+  FourOfAKind = 4,
+  FiveOfAKind = 5,
 }
 
 type Hand = {
@@ -75,9 +75,15 @@ export function day07Part2(lines: string[]) {
 
 function getPoints(cards: string): Match {
   const matches: Record<string, number> = {};
+  let jokers = 0;
 
   for (let c = 0; c < cards.length; c++) {
     const card = cards[c];
+    if (card === 'J') {
+      jokers++;
+      continue;
+    }
+
     if (!matches[card]) {
       matches[card] = 0;
     }
@@ -85,25 +91,47 @@ function getPoints(cards: string): Match {
     matches[card]++;
   }
 
+  if (jokers >= 4) {
+    return Match.FiveOfAKind;
+  }
+
   let points = Match.HighCard;
 
   Object.values(matches).some((v) => {
+    cards;
     if (v === 5) {
       points = Match.FiveOfAKind;
       return true;
     }
+
     if (v === 4) {
+      if (jokers) {
+        points = Match.FiveOfAKind;
+        return true;
+      }
+
       points = Match.FourOfAKind;
       return true;
     }
+
     if (v === 3) {
-      if (!points) {
-        points = Match.ThreeOfAKind;
-        return false;
+      if (points) {
+        points = Match.FullHouse;
+        return true;
       }
 
-      points = Match.FullHouse;
-      return true;
+      if (jokers === 1) {
+        points = Match.FourOfAKind;
+        return true;
+      }
+
+      if (jokers === 2) {
+        points = Match.FiveOfAKind;
+        return true;
+      }
+
+      points = Match.ThreeOfAKind;
+      return false;
     }
 
     if (v === 2) {
@@ -113,7 +141,23 @@ function getPoints(cards: string): Match {
       }
 
       if (points === Match.OnePair) {
+        if (jokers === 1) {
+          // 1 pair + (1 pair + joker)
+          points = Match.FullHouse;
+          return true;
+        }
+
         points = Match.TwoPairs;
+        return true;
+      }
+
+      if (jokers === 3) {
+        points = Match.FiveOfAKind;
+        return true;
+      }
+
+      if (jokers === 2) {
+        points = Match.FourOfAKind;
         return true;
       }
 
@@ -121,6 +165,32 @@ function getPoints(cards: string): Match {
       return false;
     }
   });
+
+  if (points === Match.HighCard) {
+    if (jokers === 1) {
+      return Match.OnePair;
+    }
+
+    if (jokers === 2) {
+      return Match.ThreeOfAKind;
+    }
+
+    if (jokers === 3) {
+      return Match.FourOfAKind;
+    }
+  } else if (points === Match.OnePair) {
+    if (jokers === 1) {
+      return Match.ThreeOfAKind;
+    }
+
+    if (jokers === 2) {
+      return Match.FourOfAKind;
+    }
+
+    if (jokers === 3) {
+      return Match.FiveOfAKind;
+    }
+  }
 
   return points;
 }
