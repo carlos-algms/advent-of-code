@@ -53,4 +53,4 @@ ZZZ = (ZZZ, ZZZ)
 Starting at AAA, follow the left/right instructions.  
 **How many steps are required to reach `ZZZ`?**
 
-A: ``
+A: `21797`
