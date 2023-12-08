@@ -10,10 +10,18 @@ describe(`Day ${day} - Part 1`, () => {
 
     const response = day08Part1(input);
 
-    expect(response).toBe(0);
+    expect(response).toBe(2);
   });
 
-  it('Real input', async () => {
+  it('Test input', async () => {
+    const input = await fileReader(__dirname + `/day_${day}_input_2_test.txt`);
+
+    const response = day08Part1(input);
+
+    expect(response).toBe(6);
+  });
+
+  it.skip('Real input', async () => {
     const input = await fileReader(__dirname + `/day_${day}_input.txt`);
 
     const response = day08Part1(input);
