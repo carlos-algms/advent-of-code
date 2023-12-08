@@ -1,8 +1,3 @@
-const Index = {
-  L: 0,
-  R: 1,
-};
-
 interface LinkedList {
   key: string;
   L: LinkedList | null;
@@ -18,31 +13,51 @@ interface LinkedList {
  * BBB = (DDD, EEE)
  * ....
  */
-export function day08Part1(lines: string[]) {
+export function day08Part2(lines: string[]) {
   const [directions, _, ...nodes] = lines;
 
-  let i = 0;
-  let stepsCount = 0;
-  let current = buildLinkedList(nodes);
+  let startingNodes = buildLinkedList(nodes);
 
-  do {
-    const d = directions[i] as 'L' | 'R';
-    const next = current[d];
+  const totals = startingNodes.map((node) => {
+    let i = 0;
+    let current = node;
+    let stepsCount = 0;
 
-    if (!next) {
-      throw new Error(`Invalid node - current: ${current} - direction: ${d} - index: ${i}`);
-    }
+    do {
+      const d = directions[i] as 'L' | 'R';
+      const next = current[d];
 
-    current = next;
-    stepsCount++;
-    i = (i + 1) % directions.length;
-  } while (current.key !== 'ZZZ');
+      if (!next) {
+        throw new Error(`Invalid node - current: ${current} - direction: ${d} - index: ${i}`);
+      }
 
-  return stepsCount;
+      current = next;
+      stepsCount++;
+      i = (i + 1) % directions.length;
+    } while (!current.key.endsWith('Z'));
+
+    return stepsCount;
+  });
+
+  const response = totals.reduce((acc, total) => lcm(acc, total), totals.shift()!);
+
+  return response;
+}
+
+function lcm(a: number, b: number): number {
+  const smallest = Math.min(a, b);
+  const largest = Math.max(a, b);
+
+  for (let i = largest; (i += largest); ) {
+    if (i % smallest === 0) return i;
+  }
+
+  throw new Error('No LCM');
 }
 
 function buildLinkedList(nodes: string[]) {
   const map = new Map<string, LinkedList>();
+  const startNodes: LinkedList[] = [];
 
   for (const node of nodes) {
     const [key, links] = node.split(' = ');
@@ -51,9 +66,13 @@ function buildLinkedList(nodes: string[]) {
     let next = getListItem(key, map);
     next.L = getListItem(left, map);
     next.R = getListItem(right, map);
+
+    if (key.endsWith('A')) {
+      startNodes.push(next);
+    }
   }
 
-  return map.get('AAA')!;
+  return startNodes;
 }
 
 function getListItem(key: string, list: Map<string, LinkedList>) {

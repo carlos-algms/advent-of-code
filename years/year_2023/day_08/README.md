@@ -107,4 +107,4 @@ Simultaneously start on every node that ends with A.
 
 **How many steps does it take before you're only on nodes that end with Z?**
 
-A: ``
+A: `23977527174353`
