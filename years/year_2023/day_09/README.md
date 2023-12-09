@@ -153,4 +153,4 @@ Analyze your OASIS report again, this time extrapolating the previous value for 
 
 **What is the sum of these extrapolated values?**
 
-A: ``
+A: `1026`

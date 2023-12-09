@@ -7,15 +7,15 @@ export default function day09Part2(lines: string[]) {
 
     result = stack.reduceRight((sum, currentTuple, i, stack) => {
       const nextTuple = stack[i - 1];
-      const currentLast = currentTuple[currentTuple.length - 1];
+      const currentFirst = currentTuple[0];
 
       if (nextTuple === undefined) {
-        return sum + currentLast;
+        return sum + currentFirst;
       }
 
-      const nextLast = nextTuple[nextTuple.length - 1];
-      const next = nextLast + currentLast;
-      nextTuple.push(next);
+      const nextFirst = nextTuple[0];
+      const next = nextFirst - currentFirst;
+      nextTuple.unshift(next);
 
       return sum;
     }, result);

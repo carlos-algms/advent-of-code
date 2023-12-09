@@ -2,7 +2,7 @@ import assert from 'assert';
 
 import { fileReader } from '../shared/fileReader';
 
-import solution from './day_09_part1';
+import solution from './day_09_part2';
 
 const day = '09';
 
@@ -20,11 +20,11 @@ async function realInput() {
 
   const response = solution(input);
 
-  assert.equal(response, 0);
+  assert.equal(response, 1026);
   console.log(`✅ Day ${day} - part 2 - real input passed!`);
 }
 
 (async () => {
   await test1Input();
-  // await realInput();
+  await realInput();
 })();
