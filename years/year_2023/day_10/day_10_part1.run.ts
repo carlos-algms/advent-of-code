@@ -41,12 +41,12 @@ async function realInput() {
 
   const response = solution(input);
 
-  assert.equal(response, 0);
+  assert.equal(response, 7012);
   console.log(`✅ Day ${day} - part 1 - real input passed!`);
 }
 
 (async () => {
   await test1Input();
   await test2Input();
-  // await realInput();
+  await realInput();
 })();
