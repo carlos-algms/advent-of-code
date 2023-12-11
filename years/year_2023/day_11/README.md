@@ -136,4 +136,4 @@ then find the length of the shortest path between every pair of galaxies.
 
 **What is the sum of these lengths?**
 
-A: ``
+A: `840988812853`
