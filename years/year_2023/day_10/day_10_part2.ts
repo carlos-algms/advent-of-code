@@ -1,3 +1,5 @@
+import assert from 'assert';
+
 type CompassItem = Partial<{
   toLeft: boolean;
   toRight: boolean;
@@ -44,9 +46,12 @@ export default function day10Part1(lines: string[]) {
     y: startLine,
   };
   let cross = Compass[lines[cords.y][cords.x]];
+  const seen = new Set<string>();
 
   do {
     steps++;
+    seen.add(`${cords.y},${cords.x}`);
+
     const line = lines[cords.y];
 
     if (cross.toRight) {
@@ -120,7 +125,73 @@ export default function day10Part1(lines: string[]) {
     throw new Error(`No path found at: ${JSON.stringify(cords, null, 2)}}`);
   } while (startLine !== cords.y || startColumn !== cords.x);
 
-  const result = steps / 2;
+  // clean the grid;
+
+  const grid = lines.map((line, i) => {
+    const chars = line.split('');
+    for (let c = 0; c < chars.length; c++) {
+      if (seen.has(`${i},${c}`)) {
+        continue;
+      }
+      chars[c] = '.';
+    }
+
+    return chars.join('');
+  });
+
+  console.log(grid.map((line, i) => `${line}    ${lines[i]}`).join('\n'));
+
+  let outside = new Set<string>();
+
+  for (let l = 0; l < grid.length; l++) {
+    const line = grid[l];
+    let isUp = false;
+    let isWithin = false;
+
+    for (let c = 0; c < line.length; c++) {
+      const char = line[c];
+
+      if ('.S'.includes(char)) {
+        continue;
+      }
+
+      if (char === '|') {
+        assert.equal(isUp, false);
+        isWithin = !isWithin;
+      } else if ('LF'.includes(char)) {
+        assert.equal(isUp, false);
+        isUp = char === 'L';
+      } else if ('7J'.includes(char)) {
+        const compare = isUp ? 'J' : '7';
+        if (char !== compare) {
+          isWithin = !isWithin;
+        }
+        isUp = false;
+      } else if ('-'.includes(char)) {
+        // do nothing
+      } else {
+        throw new Error(`Unknown char: ${char}`);
+      }
+
+      if (!isWithin) {
+        outside.add(`${l},${c}`);
+      }
+    }
+  }
+
+  for (let l = 0; l < grid.length; l++) {
+    const line = grid[l];
+    console.log(
+      line
+        .split('')
+        .map((char, i) => (outside.has(`${i},${l}`) ? '#' : '.'))
+        .join(''),
+    );
+  }
+  console.log('');
+
+  let result = grid.length * grid[0].length - (seen.size + outside.size);
+
   return result;
 }
 
@@ -134,4 +205,8 @@ function findStartCoords(lines: string[]) {
   }
 
   throw new Error('Start not found');
+}
+
+function intersection(a: string[], b: string[]) {
+  return a.filter((c) => b.includes(c));
 }

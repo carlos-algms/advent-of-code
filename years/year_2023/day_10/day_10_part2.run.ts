@@ -53,6 +53,6 @@ async function realInput() {
 
 (async () => {
   await test1Input();
-  await test2Input();
+  // await test2Input();
   // await realInput();
 })();
