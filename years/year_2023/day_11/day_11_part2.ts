@@ -1,89 +1,76 @@
-export default function day11Part2(lines: readonly string[]) {
-  const expanded = expand(lines);
-  const itemsCoords = findCoords(expanded);
+const Line = 0;
+const Column = 1;
 
-  const distances = calculateDistances(itemsCoords);
+type Coords = [line: number, column: number];
+
+export default function day11Part2(lines: readonly string[], expansionSize: number) {
+  const itemsCoords = findCoords(lines);
+  const expandedCoords = expandCoords(lines, itemsCoords, expansionSize - 1);
+
+  const distances = calculateDistances(expandedCoords);
 
   const sum = distances.reduce((sum, distance) => sum + distance, 0);
 
   return {
-    expanded,
     sum,
   };
 }
 
-function calculateDistances(coords: [number, number][]) {
-  const calculated = new Set<string>();
+function calculateDistances(coords: Coords[]) {
   const distances: number[] = [];
 
   for (let i = 0; i < coords.length; i++) {
     for (let j = i + 1; j < coords.length; j++) {
-      const key = `${i}-${j}`;
-      if (calculated.has(key)) {
-        continue;
-      }
-
       const [x1, y1] = coords[i];
       const [x2, y2] = coords[j];
 
       const distance = Math.abs(x1 - x2) + Math.abs(y1 - y2);
       distances.push(distance);
-
-      calculated.add(key);
     }
   }
 
   return distances;
 }
 
-function findCoords(expanded: string[]) {
-  return expanded.reduce((coords, line, l) => {
+function findCoords(universe: readonly string[]) {
+  return universe.reduce((coords, line, l) => {
     for (let c = 0; c < line.length; c++) {
       if (line[c] === '#') {
         coords.push([l, c]);
       }
     }
     return coords;
-  }, [] as [number, number][]);
+  }, [] as Coords[]);
 }
 
-function expand(lines: readonly string[]): string[] {
-  const colsWithItems = new Set<number>();
-
-  const expanded = lines.flatMap((line, l) => {
-    let hasItems = false;
-
-    for (let c = 0; c < line.length; c++) {
-      if (line[c] === '#') {
-        hasItems = true;
-        colsWithItems.add(c);
+function expandCoords(universe: readonly string[], coords: Coords[], by: number): Coords[] {
+  for (let l = universe.length - 1; l >= 0; l--) {
+    if (!universe[l].includes('#')) {
+      for (const coord of coords) {
+        if (coord[Line] > l) {
+          coord[Line] += by;
+        }
       }
     }
-    return hasItems ? line : [line, line];
-  });
+  }
 
-  return expandCols(expanded, colsWithItems);
+  return expandCols(universe, coords, by);
 }
 
-function expandCols(expanded: string[], colsWithItems: Set<number>): string[] {
-  let c = 0;
-  let added = 0;
-
-  do {
-    if (colsWithItems.has(c - added)) {
-      continue;
+function expandCols(universe: readonly string[], coords: Coords[], by: number): Coords[] {
+  for (let c = universe[0].length - 1; c >= 0; c--) {
+    if (!columnHasItem(universe, c)) {
+      for (const coord of coords) {
+        if (coord[Column] > c) {
+          coord[Column] += by;
+        }
+      }
     }
+  }
 
-    for (let l = 0; l < expanded.length; l++) {
-      const line = expanded[l].split('');
-      line.splice(c, 0, '.');
-      expanded[l] = line.join('');
-    }
+  return coords;
+}
 
-    // I need to go +2, to skip the newly added column
-    added++;
-    c++;
-  } while (expanded[++c] !== undefined);
-
-  return expanded;
+function columnHasItem(universe: readonly string[], column: number) {
+  return universe.some((line) => line[column] === '#');
 }

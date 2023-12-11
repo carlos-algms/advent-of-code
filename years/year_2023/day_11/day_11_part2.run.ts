@@ -18,9 +18,15 @@ async function test1Input() {
 .......#..
 #...#.....`.split('\n');
 
-  const response = solution(input);
+  // it should be compatible with part1
+  const response0 = solution(input, 2);
+  assert.equal(response0.sum, 374, 'the sum part 1');
 
-  assert.equal(response.sum, 0, 'the sum');
+  const response1 = solution(input, 10);
+  assert.equal(response1.sum, 1030, 'the sum 10x');
+
+  const response2 = solution(input, 100);
+  assert.equal(response2.sum, 8410, 'the sum 100x');
 
   console.log(`✅ Day ${day} - part 2 - test 1 passed!`);
 }
@@ -28,9 +34,9 @@ async function test1Input() {
 async function realInput() {
   const input = await fileReader(__dirname + `/day_${day}_input.txt`);
 
-  const response = solution(input);
+  const response = solution(input, 1000000);
 
-  assert.equal(response.sum, 0);
+  assert.equal(response.sum, 840988812853);
   console.log(`✅ Day ${day} - part 2 - real input passed!`);
 }
 
