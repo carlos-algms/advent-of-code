@@ -9,10 +9,11 @@
  */
 export default function day12Part2(lines: readonly string[]): number {
   const result = lines.reduce((total, lineContent, i) => {
-    const [line, sequenceStr] = lineContent.split(' ');
-    const sequence = sequenceStr.split(',').map(Number);
-
-    let lineSum = countArrangements(line, sequence);
+    const memo = new Map<string, number>();
+    const [originalLine, sequenceStr] = lineContent.split(' ');
+    const sequence = new Array(5).fill(sequenceStr).join(',').split(',').map(Number);
+    const line = new Array(5).fill(originalLine).join('?');
+    let lineSum = countArrangements(line, sequence, memo);
 
     return total + lineSum;
   }, 0);
@@ -20,7 +21,11 @@ export default function day12Part2(lines: readonly string[]): number {
   return result;
 }
 
-export function countArrangements(line: string, sameInSequence: number[]): number {
+export function countArrangements(
+  line: string,
+  sameInSequence: number[],
+  memo: Map<string, number>,
+): number {
   if (!line) {
     return sameInSequence.length === 0 ? 1 : 0;
   }
@@ -29,10 +34,18 @@ export function countArrangements(line: string, sameInSequence: number[]): numbe
     return line.includes('#') ? 0 : 1;
   }
 
-  let result = 0;
+  const key = `${line}-${sameInSequence.join(',')}`;
+
+  let result = memo.get(key);
+
+  if (result !== undefined) {
+    return result;
+  }
+
+  result = 0;
 
   if ('.?'.includes(line[0])) {
-    result += countArrangements(line.slice(1), sameInSequence);
+    result += countArrangements(line.slice(1), sameInSequence, memo);
   }
 
   if ('#?'.includes(line[0])) {
@@ -42,11 +55,12 @@ export function countArrangements(line: string, sameInSequence: number[]): numbe
       !line.slice(0, sameInSequence[0]).includes('.') &&
       (sameInSequence[0] === line.length || line[sameInSequence[0]] !== '#')
     ) {
-      result += countArrangements(line.slice(sameInSequence[0] + 1), sameInSequence.slice(1));
+      result += countArrangements(line.slice(sameInSequence[0] + 1), sameInSequence.slice(1), memo);
     } else {
       result += 0;
     }
   }
 
+  memo.set(key, result);
   return result;
 }

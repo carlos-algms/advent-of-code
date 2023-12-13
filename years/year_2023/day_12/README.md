@@ -166,4 +166,4 @@ Unfold your condition records;
 
 **what is the new sum of possible arrangement counts?**
 
-A: ``
+A: `548241300348335`

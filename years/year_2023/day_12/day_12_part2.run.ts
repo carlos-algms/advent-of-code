@@ -12,7 +12,7 @@ function test1() {
 
   assert.equal(response, 1, 'the sum');
 
-  console.log(`✅ Day ${day} - part 1 - test with 1 passed!`);
+  console.log(`✅ Day ${day} - Part 2 - test with 1 passed!`);
 }
 
 function test2() {
@@ -21,7 +21,7 @@ function test2() {
 
   assert.equal(response, 16384, 'the sum');
 
-  console.log(`✅ Day ${day} - part 1 - test 2 passed!`);
+  console.log(`✅ Day ${day} - Part 2 - test 2 passed!`);
 }
 
 async function test1Input() {
@@ -36,7 +36,7 @@ async function test1Input() {
 
   assert.equal(response, 525152, 'the sum');
 
-  console.log(`✅ Day ${day} - part 1 - test 1 passed!`);
+  console.log(`✅ Day ${day} - Part 2 - test 1 passed!`);
 }
 
 async function realInput() {
@@ -46,12 +46,12 @@ async function realInput() {
 
   assert.equal(response, 7506, 'the sum');
 
-  console.log(`✅ Day ${day} - part 1 - real input passed!`);
+  console.log(`✅ Day ${day} - Part 2 - real input passed!`);
 }
 
 (() => {
   test1();
-  // test2();
-  // test1Input();
-  // realInput();
+  test2();
+  test1Input();
+  realInput();
 })();
