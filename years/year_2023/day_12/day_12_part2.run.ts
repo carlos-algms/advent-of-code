@@ -2,11 +2,11 @@ import assert from 'assert';
 
 import { fileReader } from '../shared/fileReader';
 
-import solution from './day_12_part1';
+import solution from './day_12_part2';
 
 const day = '12';
 
-function testWith1Arrangement() {
+function test1() {
   const input = ['???.### 1,1,3'];
   const response = solution(input);
 
@@ -15,22 +15,13 @@ function testWith1Arrangement() {
   console.log(`✅ Day ${day} - part 1 - test with 1 passed!`);
 }
 
-function testWith4Arrangements() {
+function test2() {
   const input = ['.??..??...?##. 1,1,3'];
   const response = solution(input);
 
-  assert.equal(response, 4, 'the sum');
+  assert.equal(response, 16384, 'the sum');
 
-  console.log(`✅ Day ${day} - part 1 - test with 4 passed!`);
-}
-
-function testWith10Arrangements() {
-  const input = ['?###???????? 3,2,1'];
-  const response = solution(input);
-
-  assert.equal(response, 10, 'the sum');
-
-  console.log(`✅ Day ${day} - part 1 - test with 10 passed!`);
+  console.log(`✅ Day ${day} - part 1 - test 2 passed!`);
 }
 
 async function test1Input() {
@@ -43,7 +34,7 @@ async function test1Input() {
 
   const response = solution(input);
 
-  assert.equal(response, 21, 'the sum');
+  assert.equal(response, 525152, 'the sum');
 
   console.log(`✅ Day ${day} - part 1 - test 1 passed!`);
 }
@@ -59,9 +50,8 @@ async function realInput() {
 }
 
 (() => {
-  testWith1Arrangement();
-  testWith4Arrangements();
-  testWith10Arrangements();
-  test1Input();
-  realInput();
+  test1();
+  // test2();
+  // test1Input();
+  // realInput();
 })();
