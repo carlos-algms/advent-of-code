@@ -126,6 +126,6 @@ that meet the given criteria.
 
 **What is the sum of those counts?**
 
-A: ``
+A: `7506`
 
 #

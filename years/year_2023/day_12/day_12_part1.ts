@@ -9,100 +9,45 @@
 
  */
 export default function day12Part1(lines: readonly string[]): number {
-  const result = lines.reduce((sum, lineContent, i) => {
-    const [line, sequence] = lineContent.split(' ');
-    const uniqueLinesSet = new Set<string>();
-    buildUniqueLines(line.split(''), uniqueLinesSet);
+  const result = lines.reduce((total, lineContent, i) => {
+    const [line, sequenceStr] = lineContent.split(' ');
+    const sequence = sequenceStr.split(',').map(Number);
 
-    let lineSum = 0;
-    const lineMemo = new Map<string, number>();
+    let lineSum = countArrangements(line, sequence);
 
-    uniqueLinesSet.forEach((uniqueLine) => {
-      const cleanLine = removeExtraDots(uniqueLine);
-      const uniqueSum = countArrangements(
-        cleanLine.split(''),
-        sequence.split(',').map(Number),
-        lineMemo,
-      );
-      lineSum += uniqueSum;
-    });
-
-    return sum + lineSum;
+    return total + lineSum;
   }, 0);
 
   return result;
 }
 
-export function countArrangements(
-  line: string[],
-  sameInSequence: number[],
-  memo: Map<string, number>,
-) {
-  const sequenceLength = sameInSequence.length;
-  const maxPositionToMatch = line.length - sequenceLength;
-  let sum = 0;
-
-  for (let x1 = 0; x1 <= maxPositionToMatch; x1++) {
-    let s = 0;
-    let wantedChar = '#';
-    let sequence = '';
-    let fullSequence = '';
-
-    for (let x2 = x1; x2 < line.length; x2++) {
-      const char = line[x2];
-
-      if (char !== wantedChar) {
-        break;
-      }
-
-      fullSequence += char;
-
-      if (char === '.') {
-        wantedChar = '#';
-        continue;
-      }
-
-      sequence += char;
-
-      if (sequence.length === sameInSequence[s]) {
-        s++;
-        wantedChar = '.';
-        sequence = '';
-      }
-
-      if (s === sequenceLength) {
-        sum++;
-        break;
-      }
-    }
-
-    fullSequence;
+export function countArrangements(line: string, sameInSequence: number[]): number {
+  if (!line) {
+    return sameInSequence.length === 0 ? 1 : 0;
   }
 
-  return sum;
-}
+  if (sameInSequence.length === 0) {
+    return line.includes('#') ? 0 : 1;
+  }
 
-export function removeExtraDots(line: string) {
-  return line.replace(/^\.+|\.+$/g, '').replace(/\.{2,}/g, '.');
-}
+  let result = 0;
 
-const Joker = '?';
-const PossibleChars = ['#', '.'];
+  if ('.?'.includes(line[0])) {
+    result += countArrangements(line.slice(1), sameInSequence);
+  }
 
-function buildUniqueLines(line: string[], uniques: Set<string>) {
-  for (let c = 0; c < line.length; c++) {
-    const char = line[c];
-
-    if (char === Joker) {
-      for (const possibleChar of PossibleChars) {
-        const newLine = [...line];
-        newLine[c] = possibleChar;
-        if (!newLine.includes(Joker)) {
-          uniques.add(newLine.join(''));
-        } else {
-          buildUniqueLines(newLine, uniques);
-        }
-      }
+  if ('#?'.includes(line[0])) {
+    if (
+      // TODO the slices here might be wrong
+      sameInSequence[0] <= line.length &&
+      !line.slice(0, sameInSequence[0]).includes('.') &&
+      (sameInSequence[0] === line.length || line[sameInSequence[0]] !== '#')
+    ) {
+      result += countArrangements(line.slice(sameInSequence[0] + 1), sameInSequence.slice(1));
+    } else {
+      result += 0;
     }
   }
+
+  return result;
 }

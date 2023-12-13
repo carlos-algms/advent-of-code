@@ -2,18 +2,9 @@ import assert from 'assert';
 
 import { fileReader } from '../shared/fileReader';
 
-import solution, { countArrangements, removeExtraDots } from './day_12_part1';
+import solution from './day_12_part1';
 
 const day = '12';
-
-function testSpecificArrangement() {
-  const arrangement = removeExtraDots('.##..#....###.');
-  const sequence = [1, 1, 3];
-  const memo = new Map<string, number>();
-  const result = countArrangements(arrangement.split(''), sequence, memo);
-  assert.equal(result, 1, 'the sum');
-  console.log(`✅ Day ${day} - part 1 - specific 1 passed!`);
-}
 
 function testWith1Arrangement() {
   const input = ['???.### 1,1,3'];
@@ -62,16 +53,15 @@ async function realInput() {
 
   const response = solution(input);
 
-  assert.equal(response, 0, 'the sum');
+  assert.equal(response, 7506, 'the sum');
 
   console.log(`✅ Day ${day} - part 1 - real input passed!`);
 }
 
-(async () => {
-  // testSpecificArrangement();
-  // testWith1Arrangement();
-  // testWith4Arrangements();
+(() => {
+  testWith1Arrangement();
+  testWith4Arrangements();
   testWith10Arrangements();
-  // await test1Input();
-  // await realInput();
+  test1Input();
+  realInput();
 })();
