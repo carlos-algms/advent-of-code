@@ -67,7 +67,7 @@ async function realInput() {
 
   const response = solution(input);
   assert(response > 27418, 'first pass was too low');
-  assert.equal(response, 0, 'the sum');
+  assert.equal(response, 31877, 'the sum');
 
   console.log(`✅ Day ${day} - part ${part} - real input passed!`);
 }

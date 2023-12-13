@@ -8,9 +8,13 @@ export default function day13Part2(input: string): number {
     const lines = block.split('\n');
     const rSize = findRowMirror(lines);
 
+    if (rSize) {
+      return acc + rSize * 100;
+    }
+
     const hSize = findHorizontalReflectionSize(lines);
 
-    return acc + rSize * 100 + hSize;
+    return acc + hSize;
   }, 0);
 
   return sum;
@@ -38,10 +42,19 @@ function findRowMirror(lines: string[]): number {
       below.length = above.length;
     }
 
-    const mirrorAbove = above.join('\n');
-    const mirrorBelow = below.join('\n');
+    let diffCount = 0;
+    for (let l = 0; l < above.length && diffCount <= 2; l++) {
+      const aboveLine = above[l];
+      const belowLine = below[l];
 
-    if (above.length && below.length && mirrorAbove === mirrorBelow) {
+      for (let c = 0; c < aboveLine.length && diffCount <= 2; c++) {
+        if (aboveLine[c] !== belowLine[c]) {
+          diffCount++;
+        }
+      }
+    }
+
+    if (diffCount === 1) {
       return i;
     }
   }
