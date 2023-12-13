@@ -98,6 +98,6 @@ Find the line of reflection in each of the patterns in your notes.
 
 **What number do you get after summarizing all of your notes?**
 
-A ``
+A `31877`
 
 #
