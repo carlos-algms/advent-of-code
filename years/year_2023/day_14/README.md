@@ -83,6 +83,6 @@ Tilt the platform so that the rounded rocks all roll north.
 
 **Afterward, what is the total load on the north support beams?**
 
-A: ``
+A: `113456`
 
 #
