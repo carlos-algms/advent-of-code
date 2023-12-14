@@ -36,5 +36,5 @@ async function realInput() {
 
 (async () => {
   await test1Input();
-  // await realInput();
+  await realInput();
 })();
