@@ -150,4 +150,4 @@ Run the spin cycle for `1000000000` cycles.
 
 **Afterward, what is the total load on the north support beams?**
 
-A: ``
+A: `118747`
