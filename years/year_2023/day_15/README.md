@@ -232,4 +232,4 @@ follow the initialization sequence.
 
 **What is the focusing power of the resulting lens configuration?**
 
-A: ``
+A: `245223`

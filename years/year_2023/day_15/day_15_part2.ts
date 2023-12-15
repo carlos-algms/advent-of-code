@@ -1,18 +1,32 @@
-/**
- *
- */
+const matcher = /^(?<label>[^=\-]+)(?<operation>[=\-])(?<value>\d*)/i;
+
+const Add = '=';
+
+type Box = Record<string, number>;
+type Boxes = Record<number, Box>;
+
 export default function day15Part2(input: string): number {
-  const memo = new Map<string, number>();
   const steps = input.split(',');
+  const boxes: Boxes = {};
 
-  const sum = steps.reduce((acc, step) => {
-    if (memo.has(step)) {
-      return memo.get(step)! + acc;
+  steps.forEach((step) => {
+    const match = matcher.exec(step);
+    const { label, operation, value } = match?.groups ?? {};
+    const boxIndex = sumChars(label);
+
+    const box = boxes[boxIndex] || (boxes[boxIndex] = {});
+
+    if (operation === Add) {
+      box[label] = parseInt(value, 10);
+    } else {
+      delete box[label];
     }
+  }, 0);
 
-    const sum = sumChars(step);
-    memo.set(step, sum);
-    return acc + sum;
+  const sum = Object.entries(boxes).reduce((acc, [key, lenses]) => {
+    const i = parseInt(key, 10) + 1;
+    const power = Object.values(lenses).reduce((acc, lens, x) => acc + i * (x + 1) * lens, 0);
+    return acc + power;
   }, 0);
 
   return sum;
