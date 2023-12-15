@@ -21,3 +21,9 @@ part2:
 			-e "s/Part1/Part2/g" \
 			"$$to"; \
 	done
+
+run_part1:
+	npx ts-node day_$(CUR_DAY)/day_$(CUR_DAY)_part1.run.ts
+
+run_part2:
+	npx ts-node day_$(CUR_DAY)/day_$(CUR_DAY)_part2.run.ts
