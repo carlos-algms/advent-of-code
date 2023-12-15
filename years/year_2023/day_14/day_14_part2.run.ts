@@ -29,7 +29,7 @@ async function realInput() {
   const input = await fs.readFile(__dirname + `/day_${day}_input.txt`, 'utf8');
 
   const response = solution(input);
-  assert.equal(response, 0, 'the sum');
+  assert.equal(response, 118747, 'the sum');
 
   console.log(`✅ Day ${day} - part ${part} - real input passed!`);
 }
