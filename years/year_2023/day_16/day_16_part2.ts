@@ -11,17 +11,35 @@ type Grid = string[][];
  *
  */
 export default function day16Part2(input: string): number {
-  /** Holds the coord line,row of the lines with beans passing */
+  const grid = input.split('\n').map((line) => line.split(''));
+
+  let max = -Infinity;
+  const maxLines = grid.length - 1;
+  const maxColumns = grid[0].length - 1;
+
+  for (let line = 0; line <= maxLines; line++) {
+    const fromLeft = countMoves(line, 0, Direction.Right, grid);
+    const fromRight = countMoves(line, maxColumns, Direction.Left, grid);
+    max = Math.max(max, fromLeft, fromRight);
+  }
+
+  for (let column = 0; column <= maxColumns; column++) {
+    const fromTop = countMoves(0, column, Direction.Down, grid);
+    const fromBottom = countMoves(maxLines, column, Direction.Up, grid);
+    max = Math.max(max, fromTop, fromBottom);
+  }
+
+  return max;
+}
+
+function countMoves(l: number, c: number, d: Direction, grid: Grid): number {
   const energized = new Set<string>();
   const directionCache = new Set<string>();
 
-  const grid = input.split('\n').map((line) => line.split(''));
-  move(0, 0, Direction.Right, grid, energized, directionCache);
-
+  move(l, c, d, grid, energized, directionCache);
   return energized.size;
 }
 
-// TODO make it async and each direction can flow in parallel
 function move(
   line: number,
   column: number,

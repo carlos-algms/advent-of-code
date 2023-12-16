@@ -157,4 +157,4 @@ Find the initial beam configuration that energizes the largest number of tiles;
 
 **how many tiles are energized in that configuration?**
 
-A: ``
+A: `8564`
