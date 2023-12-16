@@ -104,4 +104,4 @@ With the beam starting in the top-left heading right, ...
 
 **how many tiles end up being energized?**
 
-A: ``
+A: `8389`
