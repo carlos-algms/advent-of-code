@@ -143,4 +143,4 @@ Directing the **ultra crucible** from the lava pool to the machine parts factory
 
 **what is the least heat loss it can incur?**
 
-A: ``
+A: `1268`

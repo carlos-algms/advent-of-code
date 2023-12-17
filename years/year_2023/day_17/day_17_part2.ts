@@ -1,3 +1,6 @@
+const minMoves = 4;
+const maxMoves = 10;
+
 /**
  * Starting from top left corner of a 2D array, move to the bottom right corner.
  * Find the smallest sum of a path without moving 3 consecutive times in the same direction,
@@ -14,7 +17,7 @@ export default function day17Part2(input: string): number {
     const path = queue.pop()!;
     const { l, c, grid, direction, sameDirectionCount, sum } = path;
 
-    if (path.isBottomRightBlock()) {
+    if (path.isBottomRightBlock() && sameDirectionCount >= minMoves) {
       return sum;
     }
 
@@ -25,7 +28,7 @@ export default function day17Part2(input: string): number {
 
     seenSet.add(seemKey);
 
-    if (sameDirectionCount < 3 && direction !== Direction.Start) {
+    if (sameDirectionCount < maxMoves && direction !== Direction.Start) {
       const nextPath = new Path(grid, path);
       if (!nextPath.isOutOfBounds()) {
         nextPath.sum += path.sum + grid[nextPath.l][nextPath.c];
@@ -33,12 +36,14 @@ export default function day17Part2(input: string): number {
       }
     }
 
-    for (const nextDirection of possibleSteps) {
-      if (nextDirection !== direction && !path.isReverseDirection(nextDirection)) {
-        const nextPath = new Path(grid, path, nextDirection);
-        if (!nextPath.isOutOfBounds()) {
-          nextPath.sum += path.sum + grid[nextPath.l][nextPath.c];
-          queue.push(nextPath);
+    if (sameDirectionCount >= minMoves || direction === Direction.Start) {
+      for (const nextDirection of allDirections) {
+        if (nextDirection !== direction && !path.isReverseDirection(nextDirection)) {
+          const nextPath = new Path(grid, path, nextDirection);
+          if (!nextPath.isOutOfBounds()) {
+            nextPath.sum += path.sum + grid[nextPath.l][nextPath.c];
+            queue.push(nextPath);
+          }
         }
       }
     }
@@ -55,7 +60,7 @@ const enum Direction {
   Start = 'Start',
 }
 
-const possibleSteps = [Direction.Up, Direction.Right, Direction.Down, Direction.Left];
+const allDirections = [Direction.Up, Direction.Right, Direction.Down, Direction.Left];
 
 class Path {
   sum = 0;

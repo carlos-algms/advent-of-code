@@ -46,13 +46,13 @@ async function realInput() {
   const input = await fs.readFile(__dirname + `/day_${day}_input.txt`, 'utf8');
 
   const response = solution(input);
-  assert.equal(response, 1128, 'the sum');
+  assert.equal(response, 1268, 'the sum');
 
   console.log(`✅ Day ${day} - part ${part} - real input passed!`);
 }
 
 (async () => {
   testSmaller();
-  // await test1Input();
-  // await realInput();
+  test1Input();
+  await realInput();
 })();
