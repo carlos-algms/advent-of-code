@@ -120,4 +120,4 @@ if the Elves follow this new dig plan,
 
 **how many cubic meters of lava could the lagoon hold?**
 
-A: ``
+A: `97874103749720`

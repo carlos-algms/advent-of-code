@@ -1,8 +1,8 @@
 const Directions: Record<string, [number, number]> = {
-  U: [-1, 0],
-  D: [1, 0],
-  L: [0, -1],
-  R: [0, 1],
+  3: [-1, 0],
+  1: [1, 0],
+  2: [0, -1],
+  0: [0, 1],
 } as const;
 
 /**
@@ -15,7 +15,11 @@ export default function day18Part2(input: string): number {
   let boundaryPoints = 0;
 
   input.split('\n').map((line) => {
-    const [direction, steps] = line.split(' ');
+    const [, fullHex] = line.split('#');
+    const direction = fullHex[5];
+    const hex = fullHex.slice(0, 5);
+    const steps = parseInt(hex, 16);
+
     const [dr, dc] = Directions[direction];
     const n = Number(steps);
     boundaryPoints += n;
@@ -34,14 +38,6 @@ export default function day18Part2(input: string): number {
   const area = Math.abs(shoeLaceSum) / 2;
   const interior = area - boundaryPoints / 2 + 1;
   result = interior + boundaryPoints;
-
-  console.log({
-    area,
-    interior,
-    boundaryPoints,
-    shoeLaceSum,
-    result,
-  });
 
   return result;
 }
