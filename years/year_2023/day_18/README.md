@@ -78,4 +78,4 @@ if they follow their dig plan,
 
 **how many cubic meters of lava could it hold?**
 
-A: ``
+A: `36725`
