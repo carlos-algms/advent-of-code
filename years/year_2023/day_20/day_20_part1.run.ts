@@ -31,7 +31,7 @@ async function test2Input() {
 
   assert.equal(response, 11687500, 'the sum');
 
-  console.log(`✅ Day ${day} - part ${part} - test 1 passed!`);
+  console.log(`✅ Day ${day} - part ${part} - test 2 passed!`);
 }
 async function realInput() {
   const input = await fs.readFile(__dirname + `/day_${day}_input.txt`, 'utf8');
@@ -44,5 +44,6 @@ async function realInput() {
 
 (async () => {
   await test1Input();
-  // await realInput();
+  await test2Input();
+  await realInput();
 })();
