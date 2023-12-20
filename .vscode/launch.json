@@ -38,7 +38,8 @@
       "name": "Part 1 Debug",
       "cwd": "${workspaceFolder}/years/year_2023",
       "program": "run_part1",
-      "runtimeExecutable": "make"
+      "runtimeExecutable": "make",
+      "sourceMaps": true
     },
     {
       "type": "node",
@@ -46,7 +47,8 @@
       "name": "Part 2 Debug",
       "cwd": "${workspaceFolder}/years/year_2023",
       "program": "run_part1",
-      "runtimeExecutable": "make"
+      "runtimeExecutable": "make",
+      "sourceMaps": true
     }
   ]
 }
