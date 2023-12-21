@@ -46,7 +46,7 @@
       "request": "launch",
       "name": "Part 2 Debug",
       "cwd": "${workspaceFolder}/years/year_2023",
-      "program": "run_part1",
+      "program": "run_part2",
       "runtimeExecutable": "make",
       "sourceMaps": true
     }
