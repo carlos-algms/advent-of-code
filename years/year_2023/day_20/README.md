@@ -197,4 +197,4 @@ Reset all modules to their default states.
 Waiting for all pulses to be fully handled after each button press,
 **what is the fewest number of button presses required to deliver a single low pulse to the module named rx?**
 
-A: ``
+A: `233338595643977`

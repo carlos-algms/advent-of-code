@@ -1,46 +1,87 @@
 /**
  *
  */
-export default function day20Part2(input: string, times = 1000): number {
+export default function day20Part2(input: string): number {
   const map = buildMap(input);
   const queue: [from: string, to: string, value: boolean][][] = [];
 
-  let countHigh = 0;
-  let countLow = 0;
+  let buttonPresses = 0;
+  let foundTarget = false;
+  const target = 'rx';
 
   const broadcaster = map.get('broadcaster')!;
+  let feed: string = '';
 
-  for (let i = 0; i < times; i++) {
+  // first find which emitter feeds into the target
+  map.forEach((emitter) => {
+    if (emitter.to.includes(target)) {
+      if (feed) {
+        throw new Error(`More than one emitter feeds into ${target}`);
+      }
+
+      feed = emitter.name;
+    }
+  });
+  const seen: Record<string, number> = {};
+
+  // then find who feeds to the feed
+  map.forEach((emitter, key) => {
+    if (emitter.to.includes(feed)) {
+      seen[key] = 0;
+    }
+  });
+
+  const cycleLengths: Record<string, number> = {};
+
+  while (!foundTarget) {
+    buttonPresses++;
+
     const pulses = broadcaster.emit(true, broadcaster.name);
     queue.push(pulses);
-    countLow++;
 
     do {
       const step = queue.shift()!;
 
       for (const pulse of step) {
         const [from, to, value] = pulse;
-
-        if (value) {
-          countHigh++;
-        } else {
-          countLow++;
-        }
-
         const emitter = map.get(to)!;
 
         if (!emitter) {
           continue;
         }
 
+        if (emitter.name === feed && value === true) {
+          seen[from]++;
+
+          if (!cycleLengths[from]) {
+            cycleLengths[from] = buttonPresses;
+          } else {
+            if (buttonPresses === seen[from] * cycleLengths[from])
+              throw new Error(`Duplicated Cycle detected for ${from}`);
+          }
+
+          if (Object.values(seen).every(Boolean)) {
+            let x = Object.values(cycleLengths).reduce((a, b) => (a * b) / Math.ceil(gcd(a, b)), 1);
+            return x;
+          }
+        }
+
         const pulses = emitter.emit(value, from);
         queue.push(pulses);
       }
-    } while (queue.length);
+    } while (queue.length && !foundTarget);
   }
 
-  const result = countHigh * countLow;
-  return result;
+  return 0;
+}
+
+// greatest common divisor
+function gcd(a: number, b: number) {
+  if (!b) {
+    return a;
+  }
+
+  return gcd(b, a % b);
 }
 
 /**
